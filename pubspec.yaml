@@ -62,21 +62,21 @@ flutter_launcher_icons:
   # Remove alpha channel for iOS
   remove_alpha_ios: true
 flutter_native_splash:
-  color: "#FFFFFF" # Background color for the splash screen (light mode)
+  # Light mode configuration
+  color: "#FFFFFF" # White background for light mode
   image: assets/images/app_logo.png # Path to your splash screen image (light mode)
-
-
-  color_dark: "#FFFFFF" # A common dark background color
-  image_dark: assets/images/app_logo.png # Or use a dark-themed splash: "assets/branding/splash_screen_dark.png"
-
+ 
+  # Dark mode configuration
+  color_dark: "#FFFFFF" # White background color for dark mode
+  image_dark: assets/images/app_logo.png # Same logo or use a different one for dark mode
+ 
+  # Android 12+ specific configuration
   android_12:
-    image: assets/images/app_logo.png # Often use app icon for A12+ centered icon
-    icon_background_color: "#FFFFFF"
-    # image_dark: assets/branding/logo_dark.png # For A12 dark mode
-    # icon_background_color_dark: "#121212"
-
-  web: true # Enable web splash screen generation
-  web_image_mode: cover # Changed from 'center' to 'cover'
+    image: assets/images/app_logo.png # App logo for Android 12+ centered icon
+    icon_background_color: "#FFFFFF" # White background for light mode
+    image_dark: assets/images/app_logo.png # Dark mode logo (or use a different variant)
+    icon_background_color_dark: "#FFFFFF" # White background for dark mode
+ 
 
 flutter:
   uses-material-design: true
