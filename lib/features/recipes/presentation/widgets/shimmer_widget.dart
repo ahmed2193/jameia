@@ -5,9 +5,9 @@ class ShimmerWidget extends StatelessWidget {
   final Widget child;
 
   const ShimmerWidget({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +27,12 @@ class ShimmerPlaceholder extends StatelessWidget {
   final EdgeInsetsGeometry margin;
 
   const ShimmerPlaceholder({
-    Key? key,
+    super.key,
     this.width,
     this.height,
     this.shape = BoxShape.rectangle,
     this.margin = EdgeInsets.zero,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

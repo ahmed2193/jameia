@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jameia/features/recipes/presentation/widgets/shimmer_widget.dart';
 
 class RecipeDetailsShimmer extends StatelessWidget {
-  const RecipeDetailsShimmer({Key? key}) : super(key: key);
+  const RecipeDetailsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

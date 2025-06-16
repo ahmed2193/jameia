@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -131,7 +130,7 @@ centerTitle: true,
           } else {
             // Tablet/Desktop Layout: GridView
             final isLandscape = orientation == Orientation.landscape;
-            final crossAxisCount = isLandscape ? 4 : 2;
+            final crossAxisCount = isLandscape ? 3 : 2;
             return GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,

@@ -202,7 +202,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
         if (recipe.ingredients != null)
           ...recipe.ingredients!
               .map((item) => _buildListItem(context, item))
-              .toList(),
+              ,
       ],
     );
   }
@@ -220,7 +220,7 @@ class _RecipeDetailsScreenState extends State<RecipeDetailsScreen> {
               .entries
               .map((entry) =>
                   _buildInstructionItem(context, entry.key + 1, entry.value))
-              .toList(),
+              ,
       ],
     );
   }

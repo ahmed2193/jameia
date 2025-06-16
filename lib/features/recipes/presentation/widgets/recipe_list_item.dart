@@ -73,9 +73,18 @@ class _RecipeListItemState extends State<RecipeListItem>
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+    final orientation = MediaQuery.of(context).orientation;
+    final isLandscape = orientation == Orientation.landscape;
     final isTablet = screenWidth > 600;
-    final cardHeight = isTablet ? 280.0 : 220.0;
+    
+    // Responsive sizing based on orientation and screen size
+    final cardHeight = isLandscape 
+        ? (isTablet ? 200.0 : 160.0) 
+        : (isTablet ? 280.0 : 220.0);
+    
     final difficultyStyle = getDifficultyStyle(widget.recipe.difficulty);
     
     return AnimatedBuilder(
@@ -211,7 +220,9 @@ class _RecipeListItemState extends State<RecipeListItem>
                               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontSize: isTablet ? 24 : 20,
+                                fontSize: isLandscape 
+                                    ? (isTablet ? 20 : 16) 
+                                    : (isTablet ? 24 : 20),
                                 shadows: [
                                   const Shadow(
                                     blurRadius: 4.0,
@@ -221,153 +232,16 @@ class _RecipeListItemState extends State<RecipeListItem>
                                 ],
                                 letterSpacing: 0.5,
                               ),
-                              maxLines: 2,
+                              maxLines: isLandscape ? 1 : 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             
-                            const SizedBox(height: 8),
+                            SizedBox(height: isLandscape ? 4 : 8),
                             
-                            // Recipe Metadata Row
-                            Row(
-                              children: [
-                                // Time badge
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.2),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.3),
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.access_time_rounded,
-                                        size: isTablet ? 16 : 14,
-                                        color: Colors.white,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        widget.recipe.cookTimeMinutes == null
-                                            ? '30 min'
-                                            : '${widget.recipe.cookTimeMinutes} min',
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: isTablet ? 12 : 11,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                
-                                // Difficulty badge with color coding
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: (difficultyStyle['color'] as Color).withValues(alpha: 0.9),
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: (difficultyStyle['color'] as Color).withValues(alpha: 0.3),
-                                        blurRadius: 4,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        difficultyStyle['icon'] as IconData,
-                                        size: isTablet ? 14 : 12,
-                                        color: Colors.white,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        difficultyStyle['label'] as String,
-                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: isTablet ? 12 : 11,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                
-                                // Rating badge
-                                if (widget.recipe.rating != null) ...[
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.amber.withValues(alpha: 0.9),
-                                      borderRadius: BorderRadius.circular(12),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.amber.withValues(alpha: 0.3),
-                                          blurRadius: 4,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.star_rounded,
-                                          size: isTablet ? 14 : 12,
-                                          color: Colors.white,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          widget.recipe.rating!.toStringAsFixed(1),
-                                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: isTablet ? 12 : 11,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                                
-                                const Spacer(),
-                                
-                                // Favorite Icon
-                                Container(
-                                  padding: const EdgeInsets.all(6),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withValues(alpha: 0.2),
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.white.withValues(alpha: 0.3),
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Icon(
-                                    Icons.favorite_rounded,
-                                    size: isTablet ? 20 : 18,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Recipe Metadata Row - Responsive layout
+                            isLandscape 
+                                ? _buildLandscapeMetadataLayout(context, difficultyStyle, isTablet)
+                                : _buildPortraitMetadataLayout(context, difficultyStyle, isTablet),
                           ],
                         ),
                       ),
@@ -394,6 +268,197 @@ class _RecipeListItemState extends State<RecipeListItem>
           ),
         );
       },
+    );
+  }
+
+  // Portrait layout (original layout)
+  Widget _buildPortraitMetadataLayout(BuildContext context, Map<String, dynamic> difficultyStyle, bool isTablet) {
+    return Row(
+      children: [
+        // Time badge
+        _buildTimeBadge(context, isTablet, false),
+        const SizedBox(width: 8),
+        
+        // Difficulty badge with color coding
+        _buildDifficultyBadge(context, difficultyStyle, isTablet, false),
+        const SizedBox(width: 8),
+        
+        // Rating badge
+        if (widget.recipe.rating != null) ...[
+          _buildRatingBadge(context, isTablet, false),
+        ],
+        
+        const Spacer(),
+        
+        // Favorite Icon
+        _buildFavoriteIcon(context, isTablet, false),
+      ],
+    );
+  }
+
+  // Landscape layout - more compact and responsive
+  Widget _buildLandscapeMetadataLayout(BuildContext context, Map<String, dynamic> difficultyStyle, bool isTablet) {
+    return Wrap(
+      spacing: 6,
+      runSpacing: 4,
+      alignment: WrapAlignment.spaceBetween,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Time badge
+            _buildTimeBadge(context, isTablet, true),
+            const SizedBox(width: 6),
+            
+            // Difficulty badge
+            _buildDifficultyBadge(context, difficultyStyle, isTablet, true),
+            
+            // Rating badge (only if available)
+            if (widget.recipe.rating != null) ...[
+              const SizedBox(width: 6),
+              _buildRatingBadge(context, isTablet, true),
+            ],
+          ],
+        ),
+        
+        // Favorite Icon
+        _buildFavoriteIcon(context, isTablet, true),
+      ],
+    );
+  }
+
+  Widget _buildTimeBadge(BuildContext context, bool isTablet, bool isLandscape) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: isLandscape ? 6 : 8,
+        vertical: isLandscape ? 3 : 4,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.access_time_rounded,
+            size: isLandscape ? 12 : (isTablet ? 16 : 14),
+            color: Colors.white,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            widget.recipe.cookTimeMinutes == null
+                ? '30 min'
+                : '${widget.recipe.cookTimeMinutes} min',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: isLandscape ? 10 : (isTablet ? 12 : 11),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDifficultyBadge(BuildContext context, Map<String, dynamic> difficultyStyle, bool isTablet, bool isLandscape) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: isLandscape ? 6 : 8,
+        vertical: isLandscape ? 3 : 4,
+      ),
+      decoration: BoxDecoration(
+        color: (difficultyStyle['color'] as Color).withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: (difficultyStyle['color'] as Color).withValues(alpha: 0.3),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            difficultyStyle['icon'] as IconData,
+            size: isLandscape ? 10 : (isTablet ? 14 : 12),
+            color: Colors.white,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            difficultyStyle['label'] as String,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: isLandscape ? 10 : (isTablet ? 12 : 11),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRatingBadge(BuildContext context, bool isTablet, bool isLandscape) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: isLandscape ? 6 : 8,
+        vertical: isLandscape ? 3 : 4,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.amber.withValues(alpha: 0.9),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.amber.withValues(alpha: 0.3),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.star_rounded,
+            size: isLandscape ? 10 : (isTablet ? 14 : 12),
+            color: Colors.white,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            widget.recipe.rating!.toStringAsFixed(1),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: isLandscape ? 10 : (isTablet ? 12 : 11),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFavoriteIcon(BuildContext context, bool isTablet, bool isLandscape) {
+    return Container(
+      padding: EdgeInsets.all(isLandscape ? 4 : 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.2),
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.3),
+          width: 1,
+        ),
+      ),
+      child: Icon(
+        Icons.favorite_rounded,
+        size: isLandscape ? 14 : (isTablet ? 20 : 18),
+        color: Colors.white,
+      ),
     );
   }
 }
